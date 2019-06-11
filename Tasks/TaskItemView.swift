@@ -16,8 +16,23 @@ struct TaskItemView: View {
     
     var body: some View {
         return HStack {
-            Button(action: { self.toggleDone() }) {
-                Text(self.task.title)
+            if self.isEditing {
+                Image(systemName: "minus.circle")
+                    .foregroundColor(.red)
+                    .tapAction(count: 1) {
+                        self.delete()
+                }
+                NavigationButton(destination: TaskEditView(task: task).environmentObject(self.userData)) {
+                    Text(task.title)
+                }
+            } else {
+                Button(action: { self.toggleDone() }) {
+                    Text(self.task.title)
+                }
+                Spacer()
+                if task.isDone {
+                    Image(systemName: "checkmark").foregroundColor(Color.green)
+                }
             }
         }
     }
